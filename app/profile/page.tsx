@@ -45,7 +45,6 @@ export default function ProfilePage() {
       year: year.trim(),
     };
 
-    // Debug：确认 Profile 输出给 Path 的参数
     console.log("PROFILE -> PATH payload:", payload);
 
     const qs = new URLSearchParams(payload).toString();
@@ -57,8 +56,10 @@ export default function ProfilePage() {
       {/* ===== Top Content ===== */}
       <div className="w-full max-w-sm mx-auto">
         <h1 className="text-4xl font-semibold mb-2">Tell me about you</h1>
-        <p className="text-sm text-[#F2C9FF] mb-8">
-          This helps us find your Zodiac animal and constellation sign.
+
+        {/* ✅ Updated subtitle */}
+        <p className="text-m text-[#F2C9FF] mb-8">
+          This helps us find your Zodiac Animals, blended with astrology for daily personality insights.
         </p>
 
         {/* Name */}
@@ -105,6 +106,11 @@ export default function ProfilePage() {
             className="w-1/3 rounded-xl bg-white text-black px-4 py-3 outline-none"
           />
         </div>
+
+        {/* ✅ Privacy microcopy (8px spacing) */}
+        <p className="mt-6 text-sm text-white/60 leading-relaxed">
+          Private moment only ✨ We don’t store your profile data.
+        </p>
 
         {/* Keep spacing */}
         <div className="mt-2 min-h-[18px]" />

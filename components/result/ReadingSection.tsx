@@ -19,7 +19,7 @@ export default function ReadingSection({ data }: Props) {
         </p>
 
         {/* Body 1 */}
-        <p className="text-white/70 text-sm leading-relaxed mb-8">
+        <p className="text-white/70 text-m leading-relaxed mb-8">
           {data.paragraph1}
         </p>
 
@@ -29,7 +29,7 @@ export default function ReadingSection({ data }: Props) {
         </h3>
 
         {/* Body 2 */}
-        <p className="text-white/70 text-sm leading-relaxed">
+        <p className="text-white/70 text-m leading-relaxed">
           {data.paragraph2}
         </p>
       </div>
