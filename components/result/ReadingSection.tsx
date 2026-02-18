@@ -11,25 +11,24 @@ export default function ReadingSection({ data }: Props) {
   return (
     <section className="py-10 px-6 border-b border-white/10">
       <div className="w-full max-w-sm mx-auto">
-        <h2 className="text-xl font-semibold mb-4">Personalized Reading</h2>
 
         {/* Headline */}
-        <p className="text-white font-semibold text-base leading-relaxed mb-3">
+        <p className="text-white font-semibold text-2xl leading-relaxed mb-3">
           {data.headline}
         </p>
 
         {/* Body 1 */}
-        <p className="text-white/70 text-m leading-relaxed mb-8">
+        <p className="text-white/80 text-m leading-relaxed mb-8">
           {data.paragraph1}
         </p>
 
         {/* Mix Title */}
-        <h3 className="text-white font-semibold text-lg mb-3">
+        <h3 className="text-white font-semibold text-2xl mb-3">
           {data.mixTitle}
         </h3>
 
         {/* Body 2 */}
-        <p className="text-white/70 text-m leading-relaxed">
+        <p className="text-white/80 text-m leading-relaxed">
           {data.paragraph2}
         </p>
       </div>

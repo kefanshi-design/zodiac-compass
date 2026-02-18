@@ -12,7 +12,7 @@ export default function TipsSection({ data }: Props) {
   return (
     <section className="py-10 px-6 border-b border-white/10">
       <div className="w-full max-w-sm mx-auto">
-        <h2 className="text-xl font-semibold mb-4">How to make the day smoother</h2>
+        <h2 className="text-2xl font-semibold mb-4">How to make the day smoother</h2>
 
         {/* ✅ 两列：左侧星星轨道 + 右侧内容 */}
         <div className="relative grid grid-cols-[44px_1fr] gap-4">

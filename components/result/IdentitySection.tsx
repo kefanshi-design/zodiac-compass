@@ -31,8 +31,8 @@ export default function IdentitySection({ data }: Props) {
   return (
     <section className="py-10 px-6 border-b border-white/10">
       <div className="w-full max-w-sm mx-auto">
-        <h2 className="text-xl font-semibold mb-4 text-white">
-          Identity Section
+        <h2 className="text-lg font-semibold mb-6 text-white">
+          Your Zodiac Card
         </h2>
 
         <div

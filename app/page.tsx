@@ -52,9 +52,9 @@ export default function Page() {
       {/* CTA */}
       <button
         onClick={() => router.push("/profile")}
-        className="w-full max-w-[520px] rounded-full bg-[#F2C9FF] text-[#1C1F4E] font-semibold py-4 active:scale-[0.99] transition"
+        className="w-full max-w-[380px] rounded-full bg-[#F2C9FF] text-[#1C1F4E] font-semibold py-4 active:scale-[0.99] transition"
       >
-        Start Your Journey
+        Start Your Journey →
       </button>
     </main>
   );
