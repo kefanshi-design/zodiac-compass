@@ -3,7 +3,7 @@ export const elementColors = {
   wood: "#6BAA75",
   water: "#3A86FF",
   fire: "#FF7A45",
-  earth: "#c69d46",
+  earth: "#be831c",
 };
 
 export const yinYangColors = {
