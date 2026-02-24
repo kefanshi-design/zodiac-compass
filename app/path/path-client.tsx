@@ -295,7 +295,7 @@ const OrbitIcon = forwardRef<HTMLButtonElement, OrbitIconProps>(
           style={{
             width: size,
             height: size,
-            background: active ? "#FFF2E8" : "rgba(28,31,78,0.85)",
+            background: active ? "#F2CBFF" : "rgba(28,31,78,0.85)",
             border: active
               ? "2px solid rgba(255,255,255,0.30)"
               : "2px solid rgba(242,201,255,0.28)",
