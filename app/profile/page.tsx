@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { forwardRef, useMemo, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type PathKey = "career" | "love" | "health";
@@ -21,9 +21,18 @@ function isIntInRange(v: string, min: number, max: number) {
   return n >= min && n <= max;
 }
 
-// ✅ 你原本 path 用到的 size
 const ICON = 70;
 const GLYPH = 36;
+
+type FallingStar = {
+  id: string;
+  src: "/star-small.png" | "/star-big.png";
+  leftPct: number;
+  size: number;
+  durationMs: number;
+  dxPx: number;
+  opacity: number;
+};
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -52,16 +61,58 @@ export default function ProfilePage() {
     health: null,
   });
 
-  // 指针角度：0=向右，-90=向上
   const [pointerDeg, setPointerDeg] = useState<number>(-90);
 
-  // 外圈高光
   const [glowPos, setGlowPos] = useState<{ x: number; y: number }>({
     x: 50,
     y: 22,
   });
 
   const canContinue = isProfileValid && selected !== null;
+
+  // ===== Falling stars =====
+  const [stars, setStars] = useState<FallingStar[]>([]);
+
+  useEffect(() => {
+    function spawnStar() {
+      const isBig = Math.random() < 0.35;
+      const src = (isBig ? "/star-big.png" : "/star-small.png") as FallingStar["src"];
+
+      const size = isBig
+        ? Math.floor(18 + Math.random() * 14) // 18-32
+        : Math.floor(10 + Math.random() * 8); // 10-18
+
+      const leftPct = 6 + Math.random() * 88; // keep inside
+      const durationMs = Math.floor(1600 + Math.random() * 1800); // 1.6s-3.4s
+      const dxPx = Math.floor(-40 + Math.random() * 80); // drift
+      const opacity = 0.65 + Math.random() * 0.35;
+
+      const id =
+        typeof crypto !== "undefined" && "randomUUID" in crypto
+          ? crypto.randomUUID()
+          : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+
+      const star: FallingStar = { id, src, leftPct, size, durationMs, dxPx, opacity };
+
+      setStars((prev) => {
+        const next = [...prev, star];
+        return next.length > 26 ? next.slice(next.length - 26) : next;
+      });
+
+      window.setTimeout(() => {
+        setStars((prev) => prev.filter((s) => s.id !== id));
+      }, durationMs + 120);
+    }
+
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.key === "Shift" || e.key === "Alt" || e.key === "Meta" || e.key === "Control") return;
+      if (e.repeat) return;
+      spawnStar();
+    }
+
+    window.addEventListener("keydown", onKeyDown, { passive: true });
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   const handleNext = () => {
     if (!canContinue || !selected) return;
@@ -121,13 +172,47 @@ export default function ProfilePage() {
   }
 
   return (
-    // ✅ 1) 轻微缩小上下 padding：减少整体高度
-    <main className="min-h-screen bg-[#1C1F4E] text-white px-6 py-8">
-      {/* ✅ 2) 用 flex-column 把 CTA 放进同一个“屏幕高度容器”里 */}
-      <div className="mx-auto w-full max-w-[1100px] min-h-[calc(100vh-64px)] flex flex-col">
-        {/* ✅ 内容区：占满剩余高度（flex-1），CTA 自动留在底部 */}
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* ================= Left: Profile ================= */}
+    <main className="relative min-h-screen bg-[#1C1F4E] text-white px-6 py-8 overflow-hidden">
+      <style jsx global>{`
+        @keyframes zc-fall-star {
+          0% {
+            transform: translate3d(0, -48px, 0) rotate(0deg);
+            opacity: var(--op, 0.9);
+          }
+          70% {
+            opacity: var(--op, 0.9);
+          }
+          100% {
+            transform: translate3d(var(--dx, 0px), calc(100vh + 80px), 0) rotate(240deg);
+            opacity: 0;
+          }
+        }
+      `}</style>
+
+      <div className="pointer-events-none absolute inset-0 z-0">
+        {stars.map((s) => (
+          <div
+            key={s.id}
+            className="absolute"
+            style={{
+              left: `${s.leftPct}%`,
+              top: 0,
+              width: s.size,
+              height: s.size,
+              opacity: s.opacity,
+              animation: `zc-fall-star ${s.durationMs}ms linear forwards`,
+              ["--dx" as any]: `${s.dxPx}px`,
+              ["--op" as any]: `${s.opacity}`,
+              filter: "drop-shadow(0 0 10px rgba(242,201,255,0.22))",
+            }}
+          >
+            <Image src={s.src} alt="" width={s.size} height={s.size} />
+          </div>
+        ))}
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-[1100px] min-h-[calc(100vh-64px)] flex flex-col">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-16 items-center">
           <section className="w-full">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-tight mb-3">
               Tell me about you and what you want to explore today?
@@ -137,7 +222,6 @@ export default function ProfilePage() {
               This helps us find your Zodiac Animals, blended with astrology for daily personality insights.
             </p>
 
-            {/* Name */}
             <label className="text-sm mb-2 block">Name</label>
             <input
               type="text"
@@ -147,7 +231,6 @@ export default function ProfilePage() {
               className="w-full max-w-[520px] rounded-xl bg-white text-black px-4 py-3 mb-6 outline-none"
             />
 
-            {/* Date of Birth */}
             <label className="text-sm mb-2 block">Date of Birth</label>
             <div className="flex gap-3 max-w-[520px]">
               <input
@@ -178,15 +261,13 @@ export default function ProfilePage() {
             </p>
           </section>
 
-          {/* ================= Right: Compass (Path) ================= */}
-          <section className="w-full flex flex-col items-center">
+          <section className="w-full flex flex-col items-center mt-8 lg:mt-0">
             <div
               className="relative flex items-center justify-center w-full"
               onMouseMove={onAreaMove}
               onMouseLeave={onAreaLeave}
             >
               <div ref={diskRef} className="relative" style={{ width: 360, height: 360 }}>
-                {/* 外圈高光 */}
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
@@ -204,7 +285,6 @@ export default function ProfilePage() {
                   }}
                 />
 
-                {/* 外圈描边 */}
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
@@ -216,7 +296,6 @@ export default function ProfilePage() {
                   }}
                 />
 
-                {/* 中心圆 */}
                 <div
                   className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full"
                   style={{
@@ -227,7 +306,6 @@ export default function ProfilePage() {
                   }}
                 />
 
-                {/* 指针 */}
                 <div
                   className="absolute left-1/2 top-1/2 origin-[0%_50%]"
                   style={{
@@ -257,7 +335,6 @@ export default function ProfilePage() {
                   />
                 </div>
 
-                {/* Icons */}
                 <OrbitIcon
                   ref={(el) => {
                     iconRefs.current.career = el;
@@ -301,9 +378,7 @@ export default function ProfilePage() {
           </section>
         </div>
 
-        {/* ================= Bottom CTA（现在不会掉到屏幕外） ================= */}
-        {/* ✅ 3) CTA 宽度变短：max-w + 居中 */}
-        <div className="pt-6 flex flex-col items-center">
+        <div className="pt-6 flex flex-col items-center mt-8 lg:mt-0">
           <button
             onClick={handleNext}
             disabled={!canContinue}
