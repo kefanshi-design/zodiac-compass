@@ -42,21 +42,18 @@ export default function ResultClient() {
   const router = useRouter();
   const sp = useSearchParams();
 
-  // ✅ URL params
   const name = sp.get("name") ?? "";
   const day = sp.get("day") ?? "";
   const month = sp.get("month") ?? "";
   const year = sp.get("year") ?? "";
   const pathRaw = sp.get("path") ?? "";
 
-  // ✅ prevent direct visit without required fields
   const hasRequired = name && day && month && year && pathRaw;
   if (!hasRequired) {
     router.replace("/profile");
     return null;
   }
 
-  // ✅ normalize path
   const path: PathKey = isPathKey(pathRaw) ? pathRaw : "career";
 
   const result = useMemo(() => {
@@ -64,7 +61,6 @@ export default function ResultClient() {
     const d = Number(day);
     const y = Number(year);
 
-    // ✅ zodiac / constellation
     const zodiac = Number.isFinite(y)
       ? getZodiacAnimal(y)
       : mockResult.identity.zodiac;
@@ -74,7 +70,6 @@ export default function ResultClient() {
         ? getConstellation(m, d)
         : mockResult.identity.constellation;
 
-    // ✅ energy (safe fallback)
     let energy = mockResult.energy;
     try {
       energy = computeEnergy({
@@ -91,7 +86,6 @@ export default function ResultClient() {
       energy = mockResult.energy;
     }
 
-    // ✅ reading + tips (safe fallback)
     let reading = mockResult.reading;
     let tips = mockResult.tips;
 
@@ -112,7 +106,6 @@ export default function ResultClient() {
       tips = mockResult.tips;
     }
 
-    // ✅ card gradient based on top element + top yin/yang
     const topElement = topKey<ElementKey>(energy.elements as any, "fire");
     const topYY = topKey<YYKey>(energy.yinYang as any, "yang");
 
@@ -143,12 +136,37 @@ export default function ResultClient() {
   }, [name, day, month, year, path]);
 
   return (
-    <main className="min-h-screen bg-[#1C1F4E] text-white">
-      <IdentitySection data={result.identity} />
-      <EnergySection data={result.energy} />
-      <ReadingSection data={result.reading} />
-      <TipsSection data={result.tips} />
-      <EndingSection />
+    <main className="min-h-screen bg-[#1C1F4E] text-white relative">
+      {/* subtle ending transition */}
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 h-44"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(28,31,78,0) 0%, rgba(28,31,78,1) 85%)",
+        }}
+      />
+
+      <div className="mx-auto w-full max-w-[1180px] px-6 py-10 lg:py-12">
+        {/* Desktop: 2-column / Mobile: stack */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-1 items-start">
+          {/* Left column: Identity + Energy */}
+          <div className="flex flex-col gap-10">
+            <IdentitySection data={result.identity} />
+            <EnergySection data={result.energy} />
+          </div>
+
+          {/* Right column: Reading + Tips */}
+          <div className="flex flex-col gap-10">
+            <ReadingSection data={result.reading} />
+            <TipsSection data={result.tips} />
+          </div>
+        </div>
+
+        {/* Ending full-width centered */}
+        <div className="mt-14 lg:mt-16">
+          <EndingSection />
+        </div>
+      </div>
     </main>
   );
 }

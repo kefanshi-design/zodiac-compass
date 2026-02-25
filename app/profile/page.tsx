@@ -83,7 +83,7 @@ export default function ProfilePage() {
         : Math.floor(10 + Math.random() * 8); // 10-18
 
       const leftPct = 6 + Math.random() * 88; // keep inside
-      const durationMs = Math.floor(1600 + Math.random() * 1800); // 1.6s-3.4s
+      const durationMs = Math.floor(2600 + Math.random() * 1800); // 1.6s-3.4s
       const dxPx = Math.floor(-40 + Math.random() * 80); // drift
       const opacity = 0.65 + Math.random() * 0.35;
 
@@ -215,7 +215,7 @@ export default function ProfilePage() {
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-16 items-center">
           <section className="w-full">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-tight mb-3">
-              Tell me about you and what you want to explore today?
+              Tell us about you and choose your today's path.
             </h1>
 
             <p className="text-base text-[#F2C9FF] mb-8 max-w-[520px]">

@@ -130,8 +130,8 @@ export default function EnergySection({ data }: Props) {
   const yy2Val = yy2?.[1] ?? 0;
 
   return (
-    <section className="py-10 px-6 border-b border-white/10">
-      <div className="w-full max-w-sm mx-auto">
+    <section className="py-1 px-6 border-b border-white/0">
+      <div className="w-full max-w-[380px] mx-auto">
         <h2 className="text-2xl font-semibold mb-6">
           Your Energy &amp; Element Balance
         </h2>

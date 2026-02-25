@@ -29,10 +29,9 @@ export default function IdentitySection({ data }: Props) {
   const constellationSrc = constellationArt[constellationKey];
 
   return (
-    <section className="py-10 px-6 border-b border-white/10">
-      <div className="w-full max-w-sm mx-auto">
+    <section className="py-10 px-6 border-none border-white/0">
+      <div className="w-full max-w-[520px]">
         <h2 className="text-lg font-semibold mb-6 text-white">
-          Your Zodiac Card
         </h2>
 
         <div
