@@ -49,3 +49,54 @@
   animation: spin-ccw 60s linear infinite;
   transform-origin: center;
 }
+
+/* ===== Falling star rail animation ===== */
+
+.falling-star {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -20px;
+
+  width: 14px;
+  height: 14px;
+
+  background-image: url("/star-big.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  opacity: 0;
+  animation: starFall 7s linear infinite;
+}
+
+/* smaller star */
+.falling-star.small {
+  width: 8px;
+  height: 8px;
+  opacity: 0.8;
+}
+
+/* random timing */
+.delay-0 { animation-delay: 0s; }
+.delay-1 { animation-delay: 1.4s; }
+.delay-2 { animation-delay: 2.1s; }
+
+@keyframes starFall {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, 240px);
+    opacity: 0;
+  }
+}
