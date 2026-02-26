@@ -132,7 +132,7 @@ export default function EnergySection({ data }: Props) {
   return (
     <section className="py-1 px-8 border-b border-white/0">
       <div className="w-full max-w-[580px] text-center">
-        <h2 className="text-2xl font-semibold mb-10">
+        <h2 className="text-2xl font-semibold mb-8">
           Your Daily Energy &amp; Element Balance
         </h2>
 

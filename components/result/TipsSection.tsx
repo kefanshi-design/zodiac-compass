@@ -10,9 +10,9 @@ type Props = {
 
 export default function TipsSection({ data }: Props) {
   return (
-    <section className="py-1 px-2 border-b border-white/0">
+    <section className="py-1 px- border-b border-white/0">
       <div className="w-full max-w-sm mx-auto">
-        <h2 className="text-2xl font-semibold mb-4">
+        <h2 className="text-2xl font-semibold mb-8">
           How to make the day smoother
         </h2>
 
