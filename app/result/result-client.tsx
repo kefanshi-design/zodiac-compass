@@ -163,7 +163,7 @@ export default function ResultClient() {
         </div>
 
         {/* Ending full-width centered */}
-        <div className="mt-14 lg:mt-26">
+        <div className="mt-14 lg:mt-18">
           <EndingSection />
         </div>
       </div>
