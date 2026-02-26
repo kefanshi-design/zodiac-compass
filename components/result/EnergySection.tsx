@@ -130,16 +130,16 @@ export default function EnergySection({ data }: Props) {
   const yy2Val = yy2?.[1] ?? 0;
 
   return (
-    <section className="py-1 px-6 border-b border-white/0">
-      <div className="w-full max-w-[380px] mx-auto">
-        <h2 className="text-2xl font-semibold mb-6">
-          Your Energy &amp; Element Balance
+    <section className="py-1 px-8 border-b border-white/0">
+      <div className="w-full max-w-[580px] text-center">
+        <h2 className="text-2xl font-semibold mb-10">
+          Your Daily Energy &amp; Element Balance
         </h2>
 
         <div className="grid grid-cols-2 gap-8 items-start">
           {/* Left: Elements */}
           <div className="flex flex-col items-center">
-            <div className="scale-[0.96] origin-top">
+            <div className="scale-[0.99] origin-top">
               <Ring
                 value={e1Val}
                 color={elementColors[e1Key]}
@@ -149,7 +149,7 @@ export default function EnergySection({ data }: Props) {
               />
             </div>
 
-            <div className="mt-3" />
+            <div className="mt-5" />
 
             <div className="text-center space-y-2">
               <div className="text-white/90 font-semibold">
@@ -167,7 +167,7 @@ export default function EnergySection({ data }: Props) {
 
           {/* Right: Yin/Yang */}
           <div className="flex flex-col items-center">
-            <div className="scale-[0.96] origin-top">
+            <div className="scale-[0.99] origin-top">
               <Ring
                 value={yy1Val}
                 color={yinYangColors[yy1Key]}
@@ -177,7 +177,7 @@ export default function EnergySection({ data }: Props) {
               />
             </div>
 
-            <div className="mt-3" />
+            <div className="mt-5" />
 
             <div className="text-center space-y-2">
               <div className="text-white/90 font-semibold">

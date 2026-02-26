@@ -150,13 +150,13 @@ export default function ResultClient() {
         {/* Desktop: 2-column / Mobile: stack */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-1 items-start">
           {/* Left column: Identity + Energy */}
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-8">
             <IdentitySection data={result.identity} />
             <EnergySection data={result.energy} />
           </div>
 
           {/* Right column: Reading + Tips */}
-          <div className="flex flex-col gap-10">
+          <div className="flex flex-col gap-6">
             <ReadingSection data={result.reading} />
             <TipsSection data={result.tips} />
           </div>
