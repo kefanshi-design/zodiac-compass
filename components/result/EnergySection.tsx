@@ -130,13 +130,13 @@ export default function EnergySection({ data }: Props) {
   const yy2Val = yy2?.[1] ?? 0;
 
   return (
-    <section className="py-1 px-8 border-b border-white/0">
+    <section className="py-1 px-2 border-b border-white/0">
       <div className="w-full max-w-[580px] text-center">
         <h2 className="text-2xl font-semibold mb-8">
           Your Daily Energy &amp; Element Balance
         </h2>
 
-        <div className="grid grid-cols-2 gap-8 items-start">
+        <div className="grid grid-cols-2 gap- items-start">
           {/* Left: Elements */}
           <div className="flex flex-col items-center">
             <div className="scale-[0.99] origin-top">
