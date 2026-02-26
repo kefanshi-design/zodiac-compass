@@ -156,7 +156,7 @@ export default function ResultClient() {
           </div>
 
           {/* Right column: Reading + Tips */}
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-12">
             <ReadingSection data={result.reading} />
             <TipsSection data={result.tips} />
           </div>
