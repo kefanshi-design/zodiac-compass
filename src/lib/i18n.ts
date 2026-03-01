@@ -75,7 +75,7 @@ export const dict = {
   },
 
   // ===== Energy Section =====
-  energyTitle: { en: "Your Daily Element & Energy Balance", zh: "今日五行与能量平衡" },
+  energyTitle: { en: "Your Daily Five Elements & Energy Balance", zh: "今日五行与能量平衡" },
 
   energyHintMetal: { en: "Focus • Structure", zh: "专注 • 结构" },
   energyHintWood: { en: "Growth • Renewal", zh: "成长 • 新生" },
@@ -94,6 +94,11 @@ export const dict = {
 
   yyHintYang: { en: "Drive • Outgoing", zh: "推进 • 外放" },
   yyHintYin: { en: "Reflect • Calm", zh: "内观 • 平静" },
+
+ // ✅ NEW: Tooltip copy
+  energyBreakdownTitle: { en: "Full Element Mix", zh: "五行明细" },
+  energyBreakdownHint: { en: "Hover or tap to close", zh: "悬停或点击可收起" },
+
 
   // ===== Tips Section =====
   tipsTitle: { en: "How to make the day smoother", zh: "让今天更顺的一点建议" },
