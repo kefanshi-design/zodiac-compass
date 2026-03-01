@@ -41,6 +41,11 @@ export const dict = {
     zh: "不妨输入你的生日，通过生肖和星座，为你提供每日小建议。",
   },
 
+  profilePrivacyNote: {
+  en: "Private moment only ✨ We don't store your profile data.",
+  zh: "仅属于你的私人时刻 ✨ 我们不会存储你的个人信息。",
+},
+
   nameLabel: { en: "Name", zh: "名字" },
   dobLabel: { en: "Date of Birth", zh: "出生日期" },
 
@@ -70,7 +75,7 @@ export const dict = {
   },
 
   // ===== Energy Section =====
-  energyTitle: { en: "Your Daily Energy & Element Balance", zh: "今日能量与五行平衡" },
+  energyTitle: { en: "Your Daily Element & Energy Balance", zh: "今日五行与能量平衡" },
 
   energyHintMetal: { en: "Focus • Structure", zh: "专注 • 结构" },
   energyHintWood: { en: "Growth • Renewal", zh: "成长 • 新生" },

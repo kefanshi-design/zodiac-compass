@@ -265,7 +265,7 @@ export default function ProfilePage() {
             </div>
 
             <p className="mt-6 text-sm text-white/60 leading-relaxed">
-              Private moment only ✨ We don’t store your profile data.
+              {t(lang, "profilePrivacyNote")}
             </p>
           </section>
 
