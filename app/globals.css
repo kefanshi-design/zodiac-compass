@@ -147,8 +147,8 @@
       rgba(242,201,255,0) 30px
     );
   mix-blend-mode: screen;
-  filter: blur(10px);
-  opacity: 0.22;
+  filter: blur(14px);
+  opacity: 0.12;
 
   /* keep brightness mostly upper half like real aurora */
   -webkit-mask-image: radial-gradient(circle at 50% 18%, #000 0%, #000 42%, transparent 72%);
@@ -180,4 +180,63 @@
 @keyframes zcCurtainMove{
   0%   { transform: translate3d(-2%, 0, 0) skewX(-6deg); }
   100% { transform: translate3d( 2%, 0, 0) skewX( 6deg); }
+}
+
+/* =========================
+   Zodiac Compass: Aurora BG (matches page.tsx classNames)
+   page.tsx uses: .zc-aurora + .a1/.a2/.a3 + .zc-star-noise
+========================= */
+
+html, body {
+  background: #1C1F4E;
+}
+
+/* aurora blobs */
+.zc-aurora{
+  position:absolute;
+  inset:-20%;
+  pointer-events:none;
+  mix-blend-mode: screen;
+  filter: blur(50px);
+  opacity: .25;
+  animation: zcAuroraFloat 18s ease-in-out infinite alternate;
+}
+
+/* 3 layers */
+.zc-aurora.a1{
+  background: radial-gradient(circle at 28% 30%, rgba(216, 88, 255, 0.55), transparent 60%);
+}
+.zc-aurora.a2{
+  background: radial-gradient(circle at 70% 35%, rgba(173, 46, 211, 0.28), transparent 62%);
+  animation-delay: 5s;
+}
+.zc-aurora.a3{
+  background: radial-gradient(circle at 55% 72%, rgba(242,201,255,.18), transparent 70%);
+  animation-delay: 10s;
+}
+
+@keyframes zcAuroraFloat{
+  0%   { transform: translate3d(-3%, -2%, 0) scale(1); }
+  50%  { transform: translate3d( 3%,  2%, 0) scale(1.06); }
+  100% { transform: translate3d(-2%,  3%, 0) scale(1.02); }
+}
+
+/* very subtle star dust */
+.zc-star-noise{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  opacity:.06;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle, rgba(255,255,255,0.9) 1px, transparent 1.2px) 0 0 / 140px 140px,
+    radial-gradient(circle, rgba(236, 176, 255, 0.6) 1px, transparent 1.2px) 40px 30px / 220px 220px;
+  filter: blur(.15px);
+  animation: zcStarDrift 16s ease-in-out infinite;
+}
+
+@keyframes zcStarDrift{
+  0%   { transform: translate3d(0,0,0); }
+  50%  { transform: translate3d(-1.5%,1%,0); }
+  100% { transform: translate3d(0,0,0); }
 }

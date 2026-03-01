@@ -1,24 +1,31 @@
+// app/path/path-client.tsx
 "use client";
+
 
 import Image from "next/image";
 import React, { forwardRef, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import LanguageToggle from "@/components/LanguageToggle";
+import { useLang } from "@/components/LanguageProvider";
+import { t } from "@/src/lib/i18n";
+
 type PathKey = "career" | "love" | "health";
 
 const OPTIONS = [
-  { key: "career", title: "Career", icon: "/icon-career.png" },
-  { key: "love", title: "Love", icon: "/icon-love.png" },
-  { key: "health", title: "Health", icon: "/icon-health.png" },
+  { key: "career", titleKey: "pathCareer", icon: "/icon-career.png" },
+  { key: "love", titleKey: "pathLove", icon: "/icon-love.png" },
+  { key: "health", titleKey: "pathHealth", icon: "/icon-health.png" },
 ] as const;
 
-// ✅ 你截图里用到的 size / glyph
-const ICON = 70; // 56 * 1.1 ≈ 61.6 → 62
-const GLYPH = 36; // 图标大小（你也可以改 26/30）
+// ✅ size / glyph
+const ICON = 70;
+const GLYPH = 36;
 
 export default function PathClient() {
   const router = useRouter();
   const sp = useSearchParams();
+  const { lang } = useLang();
 
   const name = sp.get("name") ?? "";
   const day = sp.get("day") ?? "";
@@ -109,13 +116,18 @@ export default function PathClient() {
   }
 
   return (
-    <main className="min-h-screen bg-[#1C1F4E] text-white flex flex-col px-6 py-10">
-      {/* 用 flex-1 把圆盘区真正居中（你要的红框“整体往中间”） */}
+    <main className="relative min-h-screen bg-[#1C1F4E] text-white flex flex-col px-6 py-10">
+      {/* Top-right language toggle */}
+      <div className="absolute top-6 right-6 z-20">
+        <LanguageToggle />
+      </div>
+
+      {/* 用 flex-1 把圆盘区真正居中 */}
       <div className="w-full max-w-sm mx-auto flex flex-col min-h-[calc(100vh-80px)]">
         <h1 className="text-4xl font-semibold leading-tight">
-          What do you want
+          {t(lang, "pathTitleLine1")}
           <br />
-          to explore today?
+          {t(lang, "pathTitleLine2")}
         </h1>
 
         <div
@@ -123,12 +135,8 @@ export default function PathClient() {
           onMouseMove={onAreaMove}
           onMouseLeave={onAreaLeave}
         >
-          <div
-            ref={diskRef}
-            className="relative"
-            style={{ width: 331, height: 331 }}
-          >
-            {/* 外圈高光（更雾化 + 软 ring mask，避免“带子感”） */}
+          <div ref={diskRef} className="relative" style={{ width: 331, height: 331 }}>
+            {/* 外圈高光 */}
             <div
               className="absolute inset-0 rounded-full"
               style={{
@@ -169,15 +177,13 @@ export default function PathClient() {
               }}
             />
 
-            {/* 指针：缩短约 30%（96 -> 67） */}
+            {/* 指针：缩短约 30% */}
             <div
               className="absolute left-1/2 top-1/2 origin-[0%_50%]"
               style={{
                 width: 67,
                 height: 6,
-                transform: `translate(-2px, -50%) rotate(${
-                  selected ? pointerDeg : -90
-                }deg)`,
+                transform: `translate(-2px, -50%) rotate(${selected ? pointerDeg : -90}deg)`,
                 transition: "transform 420ms cubic-bezier(0.2, 0.9, 0.2, 1)",
               }}
             >
@@ -201,12 +207,12 @@ export default function PathClient() {
               />
             </div>
 
-            {/* Icons（位置可微调） */}
+            {/* Icons */}
             <OrbitIcon
               ref={(el) => {
                 iconRefs.current.career = el;
               }}
-              title="Career"
+              title={t(lang, "pathCareer")}
               icon="/icon-career.png"
               active={selected === "career"}
               onClick={() => choose("career")}
@@ -219,7 +225,7 @@ export default function PathClient() {
               ref={(el) => {
                 iconRefs.current.love = el;
               }}
-              title="Love"
+              title={t(lang, "pathLove")}
               icon="/icon-love.png"
               active={selected === "love"}
               onClick={() => choose("love")}
@@ -232,7 +238,7 @@ export default function PathClient() {
               ref={(el) => {
                 iconRefs.current.health = el;
               }}
-              title="Health"
+              title={t(lang, "pathHealth")}
               icon="/icon-health.png"
               active={selected === "health"}
               onClick={() => choose("health")}
@@ -255,14 +261,14 @@ export default function PathClient() {
               cursor: canContinue ? "pointer" : "not-allowed",
             }}
           >
-            Next Step
+            {t(lang, "nextStep")}
           </button>
 
           <button
             onClick={() => router.back()}
             className="mt-4 w-full text-sm text-white/70 transition"
           >
-            ← Back
+            {t(lang, "back")}
           </button>
         </div>
       </div>
@@ -276,62 +282,60 @@ type OrbitIconProps = {
   active: boolean;
   onClick: () => void;
   style: React.CSSProperties;
-  size: number; // ✅ 你现在用到
-  glyph: number; // ✅ 你现在用到
+  size: number;
+  glyph: number;
 };
 
-const OrbitIcon = forwardRef<HTMLButtonElement, OrbitIconProps>(
-  function OrbitIcon({ title, icon, active, onClick, style, size, glyph }, ref) {
-    return (
-      <button
-        ref={ref}
-        onClick={onClick}
-        type="button"
-        className="absolute flex flex-col items-center gap-2 select-none"
-        style={style}
+const OrbitIcon = forwardRef<HTMLButtonElement, OrbitIconProps>(function OrbitIcon(
+  { title, icon, active, onClick, style, size, glyph },
+  ref
+) {
+  return (
+    <button
+      ref={ref}
+      onClick={onClick}
+      type="button"
+      className="absolute flex flex-col items-center gap-2 select-none"
+      style={style}
+    >
+      <div
+        className="relative grid place-items-center rounded-full transition-all"
+        style={{
+          width: size,
+          height: size,
+          background: active ? "#F2CBFF" : "rgba(28,31,78,0.85)",
+          border: active ? "2px solid rgba(255,255,255,0.30)" : "2px solid rgba(242,201,255,0.28)",
+          boxShadow: active
+            ? "0 0 0 12px rgba(242, 199, 255, 0.14), 0 18px 26px rgba(0,0,0,0.35)"
+            : "0 10px 18px rgba(0,0,0,0.25)",
+          backdropFilter: "blur(6px)",
+        }}
       >
-        <div
-          className="relative grid place-items-center rounded-full transition-all"
-          style={{
-            width: size,
-            height: size,
-            background: active ? "#F2CBFF" : "rgba(28,31,78,0.85)",
-            border: active
-              ? "2px solid rgba(255,255,255,0.30)"
-              : "2px solid rgba(242,201,255,0.28)",
-            boxShadow: active
-              ? "0 0 0 12px rgba(242, 199, 255, 0.14), 0 18px 26px rgba(0,0,0,0.35)"
-              : "0 10px 18px rgba(0,0,0,0.25)",
-            backdropFilter: "blur(6px)",
-          }}
-        >
-          <div className="relative" style={{ width: glyph, height: glyph }}>
-            <Image
-              src={icon}
-              alt={title}
-              fill
-              priority
-              className="object-contain"
-              style={{
-                // inactive 变白（PNG 快速方案）
-                filter: active ? "none" : "brightness(0) invert(1)",
-              }}
-            />
-          </div>
+        <div className="relative" style={{ width: glyph, height: glyph }}>
+          <Image
+            src={icon}
+            alt={title}
+            fill
+            priority
+            className="object-contain"
+            style={{
+              filter: active ? "none" : "brightness(0) invert(1)",
+            }}
+          />
         </div>
+      </div>
 
-        <div
-          className="text-[18px] font-semibold tracking-[0.08em]"
-          style={{
-            color: "rgba(242,201,255,0.99)",
-            textShadow: active ? "0 0 14px rgba(242,201,255,0.25)" : "none",
-          }}
-        >
-          {title}
-        </div>
-      </button>
-    );
-  }
-);
+      <div
+        className="text-[18px] font-semibold tracking-[0.08em]"
+        style={{
+          color: "rgba(242,201,255,0.99)",
+          textShadow: active ? "0 0 14px rgba(242,201,255,0.25)" : "none",
+        }}
+      >
+        {title}
+      </div>
+    </button>
+  );
+});
 
 OrbitIcon.displayName = "OrbitIcon";

@@ -1,4 +1,9 @@
+// components/result/EnergySection.tsx
+"use client";
+
 import { elementColors, yinYangColors } from "@/src/lib/theme";
+import { useLang } from "@/components/LanguageProvider";
+import { t } from "@/src/lib/i18n";
 
 type ElementKey = "metal" | "wood" | "water" | "fire" | "earth";
 type YYKey = "yang" | "yin";
@@ -16,37 +21,6 @@ const elementEmoji: Record<ElementKey, string> = {
   water: "💧",
   fire: "🔥",
   earth: "⛰️",
-};
-
-const elementLabel: Record<ElementKey, string> = {
-  metal: "Metal",
-  wood: "Wood",
-  water: "Water",
-  fire: "Fire",
-  earth: "Earth",
-};
-
-const elementHint: Record<ElementKey, string> = {
-  metal: "Focus • Structure",
-  wood: "Growth • Renewal",
-  water: "Flow • Intuition",
-  fire: "Action • Passion",
-  earth: "Stability • Grounded",
-};
-
-const yyEmoji: Record<YYKey, string> = {
-  yang: "☀️",
-  yin: "🌙",
-};
-
-const yyLabel: Record<YYKey, string> = {
-  yang: "Yang",
-  yin: "Yin",
-};
-
-const yyHint: Record<YYKey, string> = {
-  yang: "Drive • Outgoing",
-  yin: "Reflect • Calm",
 };
 
 function clampPercent(n: number) {
@@ -112,29 +86,67 @@ function Ring({
   );
 }
 
+function elementLabelKey(k: ElementKey) {
+  switch (k) {
+    case "metal":
+      return "labelMetal";
+    case "wood":
+      return "labelWood";
+    case "water":
+      return "labelWater";
+    case "fire":
+      return "labelFire";
+    case "earth":
+      return "labelEarth";
+  }
+}
+
+function elementHintKey(k: ElementKey) {
+  switch (k) {
+    case "metal":
+      return "energyHintMetal";
+    case "wood":
+      return "energyHintWood";
+    case "water":
+      return "energyHintWater";
+    case "fire":
+      return "energyHintFire";
+    case "earth":
+      return "energyHintEarth";
+  }
+}
+
+function yyLabelKey(k: YYKey) {
+  return k === "yang" ? "labelYang" : "labelYin";
+}
+
+function yyHintKey(k: YYKey) {
+  return k === "yang" ? "yyHintYang" : "yyHintYin";
+}
+
 export default function EnergySection({ data }: Props) {
+  const { lang } = useLang();
+
   const topElements = getTop2(data.elements);
   const topYY = getTop2(data.yinYang);
 
   const [e1, e2] = topElements;
   const [yy1, yy2] = topYY;
 
-  const e1Key = e1?.[0] ?? "fire";
+  const e1Key = (e1?.[0] ?? "fire") as ElementKey;
   const e1Val = e1?.[1] ?? 0;
-  const e2Key = e2?.[0] ?? "earth";
+  const e2Key = (e2?.[0] ?? "earth") as ElementKey;
   const e2Val = e2?.[1] ?? 0;
 
-  const yy1Key = yy1?.[0] ?? "yang";
+  const yy1Key = (yy1?.[0] ?? "yang") as YYKey;
   const yy1Val = yy1?.[1] ?? 0;
-  const yy2Key = yy2?.[0] ?? "yin";
+  const yy2Key = (yy2?.[0] ?? "yin") as YYKey;
   const yy2Val = yy2?.[1] ?? 0;
 
   return (
     <section className="py-1 px-8 border-b border-white/0">
       <div className="w-full max-w-[580px] text-center">
-        <h2 className="text-2xl font-semibold mb-8">
-          Your Daily Energy &amp; Element Balance
-        </h2>
+        <h2 className="text-2xl font-semibold mb-8">{t(lang, "energyTitle")}</h2>
 
         <div className="grid grid-cols-2 gap-8 items-start">
           {/* Left: Elements */}
@@ -153,14 +165,14 @@ export default function EnergySection({ data }: Props) {
 
             <div className="text-center space-y-2">
               <div className="text-white/90 font-semibold">
-                {elementEmoji[e1Key]} {elementLabel[e1Key]} {e1Val}%
+                {elementEmoji[e1Key]} {t(lang, elementLabelKey(e1Key))} {e1Val}%
               </div>
               <div className="text-white/75 text-sm">
-                {elementEmoji[e2Key]} {elementLabel[e2Key]} {e2Val}%
+                {elementEmoji[e2Key]} {t(lang, elementLabelKey(e2Key))} {e2Val}%
               </div>
 
               <div className="mt-2 text-[#F2C9FF] text-sm">
-                {elementHint[e1Key]}
+                {t(lang, elementHintKey(e1Key))}
               </div>
             </div>
           </div>
@@ -171,7 +183,7 @@ export default function EnergySection({ data }: Props) {
               <Ring
                 value={yy1Val}
                 color={yinYangColors[yy1Key]}
-                emoji={yyEmoji[yy1Key]}
+                emoji={yy1Key === "yang" ? "☀️" : "🌙"}
                 size={122}
                 stroke={13}
               />
@@ -181,14 +193,16 @@ export default function EnergySection({ data }: Props) {
 
             <div className="text-center space-y-2">
               <div className="text-white/90 font-semibold">
-                {yyEmoji[yy1Key]} {yyLabel[yy1Key]} {yy1Val}%
+                {yy1Key === "yang" ? "☀️" : "🌙"} {t(lang, yyLabelKey(yy1Key))}{" "}
+                {yy1Val}%
               </div>
               <div className="text-white/75 text-sm">
-                {yyEmoji[yy2Key]} {yyLabel[yy2Key]} {yy2Val}%
+                {yy2Key === "yang" ? "☀️" : "🌙"} {t(lang, yyLabelKey(yy2Key))}{" "}
+                {yy2Val}%
               </div>
 
               <div className="mt-2 text-[#F2C9FF] text-sm">
-                {yyHint[yy1Key]}
+                {t(lang, yyHintKey(yy1Key))}
               </div>
             </div>
           </div>

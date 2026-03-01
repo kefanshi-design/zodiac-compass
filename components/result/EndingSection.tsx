@@ -1,9 +1,12 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useLang } from "@/components/LanguageProvider";
+import { t } from "@/src/lib/i18n";
 
 export default function EndingSection() {
   const router = useRouter();
+  const { lang } = useLang();
 
   return (
     <section className="relative px-6 pt-10 pb-14">
@@ -18,16 +21,17 @@ export default function EndingSection() {
       />
 
       <div className="relative flex flex-col items-center">
+        {/* Message */}
         <p className="text-white/90 font-semibold text-center">
-          Just watch out for rushing and you&apos;ll do great!
+          {t(lang, "endingMessage")}
         </p>
-    
+
         {/* Primary CTA */}
         <button
           onClick={() => router.push("/")}
           className="mt-16 w-full max-w-[420px] rounded-full bg-[#F2C9FF] text-[#1C1F4E] font-semibold py-4 active:scale-95 transition"
         >
-          Back Home
+          {t(lang, "backHome")}
         </button>
 
         {/* Inline secondary links */}
@@ -38,7 +42,7 @@ export default function EndingSection() {
             rel="noreferrer"
             className="text-white/60 underline underline-offset-4 hover:text-white/90 transition"
           >
-            Leave your idea
+            {t(lang, "leaveIdea")}
           </a>
 
           <span className="text-white/35">·</span>
@@ -49,13 +53,13 @@ export default function EndingSection() {
             rel="noreferrer"
             className="text-white/60 underline underline-offset-4 hover:text-white/90 transition"
           >
-            Meet the designer
+            {t(lang, "meetDesigner")}
           </a>
         </div>
 
         {/* Credit */}
         <div className="mt-3 text-center text-white/45 text-sm">
-          Designed &amp; launched by Kefan
+          {t(lang, "designedBy")}
         </div>
       </div>
     </section>

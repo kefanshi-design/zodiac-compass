@@ -1,4 +1,9 @@
+// components/result/TipsSection.tsx
+"use client";
+
 import Image from "next/image";
+import { useLang } from "@/components/LanguageProvider";
+import { t } from "@/src/lib/i18n";
 
 type Props = {
   data: {
@@ -9,12 +14,12 @@ type Props = {
 };
 
 export default function TipsSection({ data }: Props) {
+  const { lang } = useLang();
+
   return (
-    <section className="py-1 px- border-b border-white/0">
+    <section className="py-1 px-6 border-b border-white/0">
       <div className="w-full max-w-sm mx-auto">
-        <h2 className="text-2xl font-semibold mb-8">
-          How to make the day smoother
-        </h2>
+        <h2 className="text-2xl font-semibold mb-8">{t(lang, "tipsTitle")}</h2>
 
         {/* 两列：左侧星星轨道 + 右侧内容 */}
         <div className="relative grid grid-cols-[44px_1fr] gap-4">
@@ -52,31 +57,27 @@ export default function TipsSection({ data }: Props) {
           <div className="space-y-6">
             {/* Tips card */}
             <div className="rounded-2xl bg-white/10 p-5">
-              <h3 className="font-semibold mb-2">Energy Match Tips for Today</h3>
+              <h3 className="font-semibold mb-2">{t(lang, "tipsCardTitle")}</h3>
 
               <p className="text-[#F2C9FF] text-sm font-semibold mb-2">
-                Best to be around with…
+                {t(lang, "tipsBestTo")}
               </p>
-              <p className="text-white/85 mb-5 leading-relaxed">
-                {data.bestTo}
-              </p>
+              <p className="text-white/85 mb-5 leading-relaxed">{data.bestTo}</p>
 
               <p className="text-[#F2C9FF] text-sm font-semibold mb-2">
-                Watch out for…
+                {t(lang, "tipsWatchOut")}
               </p>
-              <p className="text-white/85 leading-relaxed">
-                {data.watchOut}
-              </p>
+              <p className="text-white/85 leading-relaxed">{data.watchOut}</p>
             </div>
 
             {/* Power words */}
             <div className="rounded-2xl bg-white/10 p-5">
-              <h3 className="font-semibold mb-3">Today’s Power Words</h3>
+              <h3 className="font-semibold mb-3">{t(lang, "tipsPowerWordsTitle")}</h3>
 
               <div className="flex flex-wrap gap-2">
-                {data.powerWords.map((w) => (
+                {data.powerWords.map((w, idx) => (
                   <span
-                    key={w}
+                    key={`${w}-${idx}`}
                     className="px-3 py-1 rounded-full bg-[#F2C9FF] text-[#1C1F4E] text-sm font-semibold"
                   >
                     {w}

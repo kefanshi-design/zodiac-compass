@@ -4,6 +4,9 @@
 import { useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import LanguageToggle from "@/components/LanguageToggle";
+import { useLang } from "@/components/LanguageProvider";
+
 import IdentitySection from "@/components/result/IdentitySection";
 import EnergySection from "@/components/result/EnergySection";
 import ReadingSection from "@/components/result/ReadingSection";
@@ -27,10 +30,7 @@ function isPathKey(v: string): v is PathKey {
   return v === "career" || v === "love" || v === "health";
 }
 
-function topKey<T extends string>(
-  obj: Record<T, number> | undefined,
-  fallback: T
-): T {
+function topKey<T extends string>(obj: Record<T, number> | undefined, fallback: T): T {
   if (!obj) return fallback;
   const entries = Object.entries(obj) as [T, number][];
   if (!entries.length) return fallback;
@@ -41,6 +41,7 @@ function topKey<T extends string>(
 export default function ResultClient() {
   const router = useRouter();
   const sp = useSearchParams();
+  const { lang } = useLang();
 
   const name = sp.get("name") ?? "";
   const day = sp.get("day") ?? "";
@@ -91,11 +92,12 @@ export default function ResultClient() {
 
     try {
       const out = computeReading({
+        lang, // ✅ 关键：把语言传进去
         name: name.trim() || mockResult.identity.name,
         zodiac,
         constellation,
         path,
-        energy,
+        energy: energy as any,
       });
 
       reading = out.reading ?? mockResult.reading;
@@ -106,8 +108,8 @@ export default function ResultClient() {
       tips = mockResult.tips;
     }
 
-    const topElement = topKey<ElementKey>(energy.elements as any, "fire");
-    const topYY = topKey<YYKey>(energy.yinYang as any, "yang");
+    const topElement = topKey<ElementKey>((energy as any).elements, "fire");
+    const topYY = topKey<YYKey>((energy as any).yinYang, "yang");
 
     const cardGradient = {
       from: elementColors[topElement] ?? "#FF8A4C",
@@ -133,10 +135,15 @@ export default function ResultClient() {
         ...tips,
       },
     };
-  }, [name, day, month, year, path]);
+  }, [name, day, month, year, path, lang]);
 
   return (
-    <main className="min-h-screen bg-[#1C1F4E] text-white relative">
+    <main className="relative min-h-screen bg-[#1C1F4E] text-white">
+      {/* Top-right language toggle */}
+      <div className="absolute top-6 right-6 z-20">
+        <LanguageToggle />
+      </div>
+
       {/* subtle ending transition */}
       <div
         className="pointer-events-none absolute inset-x-0 bottom-0 h-44"
@@ -146,23 +153,19 @@ export default function ResultClient() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-[1180px] px-6 py-10 lg:py-12">
-        {/* Desktop: 2-column / Mobile: stack */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-1 items-start">
-          {/* Left column: Identity + Energy */}
+      <div className="mx-auto w-full max-w-[1180px] px-3 py-10 lg:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-12 items-start">
           <div className="flex flex-col gap-12">
             <IdentitySection data={result.identity} />
             <EnergySection data={result.energy} />
           </div>
 
-          {/* Right column: Reading + Tips */}
           <div className="flex flex-col gap-16">
             <ReadingSection data={result.reading} />
             <TipsSection data={result.tips} />
           </div>
         </div>
 
-        {/* Ending full-width centered */}
         <div className="mt-14 lg:mt-18">
           <EndingSection />
         </div>

@@ -1,8 +1,13 @@
+// app/profile/page.tsx
 "use client";
 
 import Image from "next/image";
 import React, { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+
+import LanguageToggle from "@/components/LanguageToggle";
+import { useLang } from "@/components/LanguageProvider";
+import { t } from "@/src/lib/i18n";
 
 type PathKey = "career" | "love" | "health";
 
@@ -36,6 +41,7 @@ type FallingStar = {
 
 export default function ProfilePage() {
   const router = useRouter();
+  const { lang } = useLang();
 
   // ===== Profile state =====
   const [name, setName] = useState("");
@@ -78,13 +84,10 @@ export default function ProfilePage() {
       const isBig = Math.random() < 0.35;
       const src = (isBig ? "/star-big.png" : "/star-small.png") as FallingStar["src"];
 
-      const size = isBig
-        ? Math.floor(18 + Math.random() * 14) // 18-32
-        : Math.floor(10 + Math.random() * 8); // 10-18
-
-      const leftPct = 6 + Math.random() * 88; // keep inside
-      const durationMs = Math.floor(2600 + Math.random() * 1800); // 1.6s-3.4s
-      const dxPx = Math.floor(-40 + Math.random() * 80); // drift
+      const size = isBig ? Math.floor(18 + Math.random() * 14) : Math.floor(10 + Math.random() * 8);
+      const leftPct = 6 + Math.random() * 88;
+      const durationMs = Math.floor(2600 + Math.random() * 1800);
+      const dxPx = Math.floor(-40 + Math.random() * 80);
       const opacity = 0.65 + Math.random() * 0.35;
 
       const id =
@@ -173,6 +176,11 @@ export default function ProfilePage() {
 
   return (
     <main className="relative min-h-screen bg-[#1C1F4E] text-white px-6 py-8 overflow-hidden">
+      {/* Top-right language toggle */}
+      <div className="absolute top-6 right-6 z-30">
+        <LanguageToggle />
+      </div>
+
       <style jsx global>{`
         @keyframes zc-fall-star {
           0% {
@@ -215,41 +223,41 @@ export default function ProfilePage() {
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-16 items-center">
           <section className="w-full">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-tight mb-3">
-              Tell us about you and choose your today's path.
+              {t(lang, "profileTitle")}
             </h1>
 
             <p className="text-base text-[#F2C9FF] mb-8 max-w-[520px]">
-              This helps us find your Zodiac Animals, blended with astrology for daily personality insights.
+              {t(lang, "profileSubtitle")}
             </p>
 
-            <label className="text-sm mb-2 block">Name</label>
+            <label className="text-sm mb-2 block">{t(lang, "nameLabel")}</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Your Name"
+              placeholder={t(lang, "nameLabel")}
               className="w-full max-w-[520px] rounded-xl bg-white text-black px-4 py-3 mb-6 outline-none"
             />
 
-            <label className="text-sm mb-2 block">Date of Birth</label>
+            <label className="text-sm mb-2 block">{t(lang, "dobLabel")}</label>
             <div className="flex gap-3 max-w-[520px]">
               <input
                 inputMode="numeric"
-                placeholder="DD"
+                placeholder={t(lang, "day")}
                 value={day}
                 onChange={(e) => setDay(clampLen(onlyDigits(e.target.value), 2))}
                 className="w-1/3 rounded-xl bg-white text-black px-4 py-3 outline-none"
               />
               <input
                 inputMode="numeric"
-                placeholder="MM"
+                placeholder={t(lang, "month")}
                 value={month}
                 onChange={(e) => setMonth(clampLen(onlyDigits(e.target.value), 2))}
                 className="w-1/3 rounded-xl bg-white text-black px-4 py-3 outline-none"
               />
               <input
                 inputMode="numeric"
-                placeholder="YYYY"
+                placeholder={t(lang, "year")}
                 value={year}
                 onChange={(e) => setYear(clampLen(onlyDigits(e.target.value), 4))}
                 className="w-1/3 rounded-xl bg-white text-black px-4 py-3 outline-none"
@@ -339,7 +347,7 @@ export default function ProfilePage() {
                   ref={(el) => {
                     iconRefs.current.career = el;
                   }}
-                  title="Career"
+                  title={t(lang, "pathCareer")}
                   icon="/icon-career.png"
                   active={selected === "career"}
                   onClick={() => choose("career")}
@@ -352,7 +360,7 @@ export default function ProfilePage() {
                   ref={(el) => {
                     iconRefs.current.love = el;
                   }}
-                  title="Love"
+                  title={t(lang, "pathLove")}
                   icon="/icon-love.png"
                   active={selected === "love"}
                   onClick={() => choose("love")}
@@ -365,7 +373,7 @@ export default function ProfilePage() {
                   ref={(el) => {
                     iconRefs.current.health = el;
                   }}
-                  title="Health"
+                  title={t(lang, "pathHealth")}
                   icon="/icon-health.png"
                   active={selected === "health"}
                   onClick={() => choose("health")}
@@ -389,14 +397,14 @@ export default function ProfilePage() {
               cursor: canContinue ? "pointer" : "not-allowed",
             }}
           >
-            Next Step
+            {t(lang, "nextStep")}
           </button>
 
           <button
             onClick={() => router.back()}
             className="mt-4 w-full max-w-[380px] text-sm text-white/70 hover:text-white transition"
           >
-            ← Back
+            {t(lang, "back")}
           </button>
         </div>
       </div>
@@ -414,57 +422,56 @@ type OrbitIconProps = {
   glyph: number;
 };
 
-const OrbitIcon = forwardRef<HTMLButtonElement, OrbitIconProps>(
-  function OrbitIcon({ title, icon, active, onClick, style, size, glyph }, ref) {
-    return (
-      <button
-        ref={ref}
-        onClick={onClick}
-        type="button"
-        className="absolute flex flex-col items-center gap-2 select-none"
-        style={style}
+const OrbitIcon = forwardRef<HTMLButtonElement, OrbitIconProps>(function OrbitIcon(
+  { title, icon, active, onClick, style, size, glyph },
+  ref
+) {
+  return (
+    <button
+      ref={ref}
+      onClick={onClick}
+      type="button"
+      className="absolute flex flex-col items-center gap-2 select-none"
+      style={style}
+    >
+      <div
+        className="relative grid place-items-center rounded-full transition-all"
+        style={{
+          width: size,
+          height: size,
+          background: active ? "#F2CBFF" : "rgba(28,31,78,0.85)",
+          border: active ? "2px solid rgba(255,255,255,0.30)" : "2px solid rgba(242,201,255,0.28)",
+          boxShadow: active
+            ? "0 0 0 12px rgba(242, 199, 255, 0.14), 0 18px 26px rgba(0,0,0,0.35)"
+            : "0 10px 18px rgba(0,0,0,0.25)",
+          backdropFilter: "blur(6px)",
+        }}
       >
-        <div
-          className="relative grid place-items-center rounded-full transition-all"
-          style={{
-            width: size,
-            height: size,
-            background: active ? "#F2CBFF" : "rgba(28,31,78,0.85)",
-            border: active
-              ? "2px solid rgba(255,255,255,0.30)"
-              : "2px solid rgba(242,201,255,0.28)",
-            boxShadow: active
-              ? "0 0 0 12px rgba(242, 199, 255, 0.14), 0 18px 26px rgba(0,0,0,0.35)"
-              : "0 10px 18px rgba(0,0,0,0.25)",
-            backdropFilter: "blur(6px)",
-          }}
-        >
-          <div className="relative" style={{ width: glyph, height: glyph }}>
-            <Image
-              src={icon}
-              alt={title}
-              fill
-              priority
-              className="object-contain"
-              style={{
-                filter: active ? "none" : "brightness(0) invert(1)",
-              }}
-            />
-          </div>
+        <div className="relative" style={{ width: glyph, height: glyph }}>
+          <Image
+            src={icon}
+            alt={title}
+            fill
+            priority
+            className="object-contain"
+            style={{
+              filter: active ? "none" : "brightness(0) invert(1)",
+            }}
+          />
         </div>
+      </div>
 
-        <div
-          className="text-[18px] font-semibold tracking-[0.08em]"
-          style={{
-            color: "rgba(242,201,255,0.99)",
-            textShadow: active ? "0 0 14px rgba(242,201,255,0.25)" : "none",
-          }}
-        >
-          {title}
-        </div>
-      </button>
-    );
-  }
-);
+      <div
+        className="text-[18px] font-semibold tracking-[0.08em]"
+        style={{
+          color: "rgba(242,201,255,0.99)",
+          textShadow: active ? "0 0 14px rgba(242,201,255,0.25)" : "none",
+        }}
+      >
+        {title}
+      </div>
+    </button>
+  );
+});
 
 OrbitIcon.displayName = "OrbitIcon";
