@@ -2,6 +2,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
+
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import Analytics from "@/components/Analytics";
@@ -31,8 +33,10 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <LanguageProvider>{children}</LanguageProvider>
 
-        {/* ✅ Route-aware GA page_view (SPA) */}
-        <Analytics />
+        {/* ✅ Route-aware GA page_view (wrap to satisfy prerender) */}
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
 
         {/* ✅ Google Analytics base tag */}
         <Script
