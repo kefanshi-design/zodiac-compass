@@ -1,7 +1,8 @@
+// components/Analytics.tsx
 "use client";
 
 import { useEffect } from "react";
-import { usePathname, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 declare global {
   interface Window {
@@ -11,17 +12,18 @@ declare global {
 
 export default function Analytics() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     if (!window.gtag) return;
 
-    const url = pathname + (searchParams?.toString() ? `?${searchParams}` : "");
+    // ✅ Don't use useSearchParams (can break prerender/export on some builds)
+    const search = typeof window !== "undefined" ? window.location.search : "";
+    const url = `${pathname}${search}`;
 
     window.gtag("config", "G-SWHD49GC8X", {
       page_path: url,
     });
-  }, [pathname, searchParams]);
+  }, [pathname]);
 
   return null;
 }

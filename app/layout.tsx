@@ -2,41 +2,26 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
-import { Suspense } from "react";
-
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import Analytics from "@/components/Analytics";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Zodiac Compass",
   description: "Discover your Chinese Zodiac and energy balance.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <LanguageProvider>{children}</LanguageProvider>
 
-        {/* ✅ Route-aware GA page_view (wrap to satisfy prerender) */}
-        <Suspense fallback={null}>
-          <Analytics />
-        </Suspense>
+        {/* ✅ Route-aware page_view for SPA navigation */}
+        <Analytics />
 
         {/* ✅ Google Analytics base tag */}
         <Script
