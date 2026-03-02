@@ -1,8 +1,10 @@
+// app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { LanguageProvider } from "@/components/LanguageProvider";
+import Analytics from "@/components/Analytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,12 +28,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <LanguageProvider>{children}</LanguageProvider>
 
-        {/* ✅ Google Analytics */}
+        {/* ✅ Route-aware GA page_view (SPA) */}
+        <Analytics />
+
+        {/* ✅ Google Analytics base tag */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-SWHD49GC8X"
           strategy="afterInteractive"
