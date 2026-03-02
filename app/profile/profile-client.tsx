@@ -175,7 +175,7 @@ export default function ProfileClient() {
   }
 
   return (
-    <main className="relative min-h-screen bg-[#1C1F4E] text-white pt-18 px-6 py-8 overflow-hidden">
+    <main className="relative min-h-screen bg-[#1C1F4E] text-white pt-10 px-6 py-8 overflow-hidden">
       {/* ✅ Keep toggle pinned to viewport top-right (original behavior) */}
       <div className="absolute top-6 right-6 z-30">
         <LanguageToggle />
@@ -221,7 +221,7 @@ export default function ProfileClient() {
 
       {/* ✅ Mobile: add top padding to avoid overlap with the absolute toggle.
           ✅ Desktop: no extra padding so layout stays the same. */}
-      <div className="relative z-10 mx-auto w-full max-w-[1100px] min-h-[calc(100vh-64px)] flex flex-col pt-24 lg:pt-0">
+      <div className="relative z-10 mx-auto w-full max-w-[1100px] min-h-[calc(100vh-64px)] flex flex-col pt-15 lg:pt-0">
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-18 lg:gap-16 items-center">
           <section className="w-full">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-tight mb-3">
