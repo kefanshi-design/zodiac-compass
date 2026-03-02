@@ -121,7 +121,8 @@ export default function AnimationClient() {
           opacity: 0,
           transform: "scale(1.02)",
           filter: "blur(1.5px)",
-          transition: "opacity 600ms ease-out, transform 600ms ease-out, filter 600ms ease-out",
+          transition:
+            "opacity 600ms ease-out, transform 600ms ease-out, filter 600ms ease-out",
         }
       : {
           opacity: 1,
@@ -140,9 +141,7 @@ export default function AnimationClient() {
 
   // Optional: small hold pulse at stage 3 (subtle)
   const sidePulseStyle: React.CSSProperties =
-    stage >= 3
-      ? { animation: "zcSoftPulse 2200ms ease-in-out infinite" }
-      : { animation: "none" };
+    stage >= 3 ? { animation: "zcSoftPulse 2200ms ease-in-out infinite" } : { animation: "none" };
 
   // Label (optional)
   const labelStyle: React.CSSProperties = {
@@ -169,11 +168,17 @@ export default function AnimationClient() {
       {/* Keyframes (tiny pulse only) */}
       <style jsx global>{`
         @keyframes zcSoftPulse {
-          0%, 100% { transform: scale(1); opacity: 0.92; }
-          50% { transform: scale(1.03); opacity: 1; }
+          0%,
+          100% {
+            transform: scale(1);
+            opacity: 0.92;
+          }
+          50% {
+            transform: scale(1.03);
+            opacity: 1;
+          }
         }
       `}</style>
-
 
       {/* Scene */}
       <div className="w-full flex-1 z-10 flex items-center justify-center" style={sceneStyle}>
@@ -215,8 +220,9 @@ export default function AnimationClient() {
           </div>
 
           {/* ===== Side icons (appear after scale down) ===== */}
+          {/* ✅ 仅 mobile 往上移：top-[42%] + translate-y-[42%]；md 以上保持原样 */}
           <div
-            className="absolute left-[-40px] md:left-[-120px] top-1/2 -translate-y-1/2"
+            className="absolute left-[10px] md:left-[-120px] top-[1%] md:top-1/2 -translate-y-[42%] md:-translate-y-1/2"
             style={{ ...sideStyle, ...sidePulseStyle }}
           >
             <div className="relative w-[140px] h-[140px] md:w-[180px] md:h-[180px]">
@@ -230,7 +236,7 @@ export default function AnimationClient() {
           </div>
 
           <div
-            className="absolute right-[-40px] md:right-[-120px] top-1/2 -translate-y-1/2"
+            className="absolute right-[10px] md:right-[-120px] top-[1%] md:top-1/2 -translate-y-[42%] md:-translate-y-1/2"
             style={{ ...sideStyle, ...sidePulseStyle }}
           >
             <div className="relative w-[140px] h-[140px] md:w-[180px] md:h-[180px]">
