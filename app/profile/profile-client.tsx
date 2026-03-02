@@ -129,7 +129,7 @@ export default function ProfileClient() {
     };
 
     const qs = new URLSearchParams(payload).toString();
-    router.push(`/result?${qs}`);
+    router.push(`/animation?${qs}`);
   };
 
   function onAreaMove(e: React.MouseEvent) {
