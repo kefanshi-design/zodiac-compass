@@ -227,7 +227,7 @@ function ColorDot({ color }: { color: string }) {
   );
 }
 
-/** ✅ NEW: tooltip 内容（5个元素明细） */
+/** tooltip 内容（5个元素明细） */
 function ElementsBreakdownTooltip({
   lang,
   elements,
@@ -243,7 +243,7 @@ function ElementsBreakdownTooltip({
 
   return (
     <div
-      className="w-[210px] rounded-xl border border-white/10 bg-[#0B1230]/95 backdrop-blur-md shadow-lg px-3 py-2"
+      className="w-[140px] rounded-xl border border-white/10 bg-[#0B1230]/95 backdrop-blur-md shadow-lg px-3 py-2"
       role="dialog"
       aria-label={t(lang, "energyBreakdownTitle")}
     >
@@ -292,13 +292,18 @@ export default function EnergySection({ data }: Props) {
   const yy2Key = (yy2?.[0] ?? "yin") as YYKey;
   const yy2Val = yy2?.[1] ?? 0;
 
-  // ✅ NEW: tooltip open state (hover + click/tap)
+  // tooltip open state (hover + click/tap)
   const [elementsTipOpen, setElementsTipOpen] = useState(false);
 
   // 让 tooltip 的展示更稳定：避免频繁 re-render
   const elementsTooltip = useMemo(() => {
     return <ElementsBreakdownTooltip lang={lang} elements={data.elements} />;
   }, [lang, data.elements]);
+
+  // ✅ 关键：扩大 hover hit-area，但不改变视觉对齐/大小
+  const RING_SIZE = 122;
+  const HIT = 24; // hover/点击感应扩展的像素（想更大可改 32）
+  const HIT_BOX = RING_SIZE + HIT * 2; // 170
 
   return (
     <section className="py-1 px-8 border-b border-white/0">
@@ -308,9 +313,10 @@ export default function EnergySection({ data }: Props) {
         <div className="grid grid-cols-2 gap-8 items-start">
           {/* Left: Elements */}
           <div className="flex flex-col items-center">
-            {/* ✅ 包一层相对定位：用于 tooltip */}
+            {/* ✅ hover hit-area 容器：变大但 Ring 仍然居中，所以对齐不会跑 */}
             <div
-              className="relative"
+              className="relative flex items-center justify-center"
+              style={{ width: HIT_BOX, height: HIT_BOX }}
               onMouseEnter={() => setElementsTipOpen(true)}
               onMouseLeave={() => setElementsTipOpen(false)}
             >
@@ -327,14 +333,16 @@ export default function EnergySection({ data }: Props) {
                     value={e1Val}
                     color={elementColors[e1Key]}
                     emoji={elementEmoji[e1Key]}
-                    size={122}
+                    size={RING_SIZE}
                     stroke={13}
-                    center={<ElementsPentagon elements={data.elements} size={122} />}
+                    center={
+                      <ElementsPentagon elements={data.elements} size={RING_SIZE} />
+                    }
                   />
                 </div>
               </button>
 
-              {/* ✅ Tooltip：默认隐藏，hover / click 显示 */}
+              {/* Tooltip：默认隐藏，hover / click 显示 */}
               {elementsTipOpen && (
                 <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-20">
                   {elementsTooltip}
@@ -361,16 +369,22 @@ export default function EnergySection({ data }: Props) {
             </div>
           </div>
 
-          {/* Right: Yin/Yang (保持原样) */}
+          {/* Right: Yin/Yang */}
           <div className="flex flex-col items-center">
-            <div className="scale-[0.99] origin-top">
-              <Ring
-                value={yy1Val}
-                color={yinYangColors[yy1Key]}
-                emoji={yy1Key === "yang" ? "☀️" : "🌙"}
-                size={122}
-                stroke={13}
-              />
+            {/* ✅ 用同样的 HIT_BOX 作为占位容器，保证左右标题/文字起始高度一致 */}
+            <div
+              className="flex items-center justify-center"
+              style={{ width: HIT_BOX, height: HIT_BOX }}
+            >
+              <div className="scale-[0.99] origin-top">
+                <Ring
+                  value={yy1Val}
+                  color={yinYangColors[yy1Key]}
+                  emoji={yy1Key === "yang" ? "☀️" : "🌙"}
+                  size={RING_SIZE}
+                  stroke={13}
+                />
+              </div>
             </div>
 
             <div className="mt-5" />

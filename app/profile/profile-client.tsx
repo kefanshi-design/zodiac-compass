@@ -175,7 +175,7 @@ export default function ProfileClient() {
   }
 
   return (
-    <main className="relative min-h-screen bg-[#1C1F4E] text-white pt-22 px-6 py-8 overflow-hidden">
+    <main className="relative min-h-screen bg-[#1C1F4E] text-white pt-18 px-6 py-8 overflow-hidden">
       {/* Top-right language toggle */}
       <div className="absolute top-6 right-6 z-30">
         <LanguageToggle />
@@ -220,7 +220,7 @@ export default function ProfileClient() {
       </div>
 
       <div className="relative z-10 mx-auto w-full max-w-[1100px] min-h-[calc(100vh-64px)] flex flex-col">
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-10 lg:gap-16 items-center">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-18 lg:gap-16 items-center">
           <section className="w-full">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-tight mb-3">
               {t(lang, "profileTitle")}
@@ -386,7 +386,7 @@ export default function ProfileClient() {
           </section>
         </div>
 
-        <div className="pt-6 flex flex-col items-center mt-8 lg:mt-0">
+        <div className="pt-2 flex flex-col items-center mt-8 lg:mt-0">
           <button
             onClick={handleNext}
             disabled={!canContinue}
@@ -435,7 +435,7 @@ const OrbitIcon = forwardRef<HTMLButtonElement, OrbitIconProps>(function OrbitIc
       style={style}
     >
       <div
-        className="relative grid place-items-center rounded-full transition-all"
+        className="relative grid place-items-center rounded-full  transition-all"
         style={{
           width: size,
           height: size,
