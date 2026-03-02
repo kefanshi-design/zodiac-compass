@@ -175,14 +175,12 @@ export default function ProfileClient() {
   }
 
   return (
-    <main
-      className={[
-        "relative bg-[#1C1F4E] text-white overflow-x-hidden",
-        // ✅ mobile 允许滚动；lg 尽量锁定一屏不滚动
-        "min-h-screen lg:h-screen lg:overflow-hidden",
-      ].join(" ")}
-    >
-      {/* Falling stars background */}
+    <main className="relative min-h-screen bg-[#1C1F4E] text-white pt-18 px-6 py-8 overflow-hidden">
+      {/* ✅ Keep toggle pinned to viewport top-right (original behavior) */}
+      <div className="absolute top-6 right-6 z-30">
+        <LanguageToggle />
+      </div>
+
       <style jsx global>{`
         @keyframes zc-fall-star {
           0% {
@@ -221,28 +219,16 @@ export default function ProfileClient() {
         ))}
       </div>
 
-      {/* ✅ 统一的页面容器：把 toggle 放进 flow（不重叠） */}
-      <div className="relative z-10 mx-auto w-full max-w-[1100px] px-6 py-6 lg:py-8 h-full flex flex-col">
-        {/* Header: Language toggle (in-flow, no overlap) */}
-        <div className="flex justify-end mb-6 lg:mb-8 shrink-0">
-          <LanguageToggle />
-        </div>
-
-        {/* Content */}
-        <div
-          className={[
-            "flex-1 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] items-center",
-            // ✅ 减少 gap，让 desktop 更容易一屏容纳
-            "gap-12 lg:gap-14",
-          ].join(" ")}
-        >
-          {/* Left: form */}
+      {/* ✅ Mobile: add top padding to avoid overlap with the absolute toggle.
+          ✅ Desktop: no extra padding so layout stays the same. */}
+      <div className="relative z-10 mx-auto w-full max-w-[1100px] min-h-[calc(100vh-64px)] flex flex-col pt-24 lg:pt-0">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-18 lg:gap-16 items-center">
           <section className="w-full">
             <h1 className="text-3xl lg:text-4xl font-semibold leading-tight mb-3">
               {t(lang, "profileTitle")}
             </h1>
 
-            <p className="text-base text-[#F2C9FF] mb-6 max-w-[520px]">
+            <p className="text-base text-[#F2C9FF] mb-8 max-w-[520px]">
               {t(lang, "profileSubtitle")}
             </p>
 
@@ -252,7 +238,7 @@ export default function ProfileClient() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={t(lang, "nameLabel")}
-              className="w-full max-w-[520px] rounded-xl bg-white text-black px-4 py-3 mb-5 outline-none"
+              className="w-full max-w-[520px] rounded-xl bg-white text-black px-4 py-3 mb-6 outline-none"
             />
 
             <label className="text-sm mb-2 block">{t(lang, "dobLabel")}</label>
@@ -280,27 +266,18 @@ export default function ProfileClient() {
               />
             </div>
 
-            <p className="mt-5 text-sm text-white/60 leading-relaxed">
+            <p className="mt-6 text-sm text-white/60 leading-relaxed">
               {t(lang, "profilePrivacyNote")}
             </p>
           </section>
 
-          {/* Right: compass */}
-          <section className="w-full flex flex-col items-center lg:items-end">
+          <section className="w-full flex flex-col items-center mt-8 lg:mt-0">
             <div
               className="relative flex items-center justify-center w-full"
               onMouseMove={onAreaMove}
               onMouseLeave={onAreaLeave}
             >
-              {/* ✅ responsive：mobile 稍小一点，避免把一屏撑爆；desktop 保持你原来的 360 */}
-              <div
-                ref={diskRef}
-                className="relative"
-                style={{
-                  width: 360,
-                  height: 360,
-                }}
-              >
+              <div ref={diskRef} className="relative" style={{ width: 360, height: 360 }}>
                 <div
                   className="absolute inset-0 rounded-full"
                   style={{
@@ -411,8 +388,7 @@ export default function ProfileClient() {
           </section>
         </div>
 
-        {/* Footer buttons */}
-        <div className="pt-2 flex flex-col items-center mt-6 lg:mt-4 shrink-0">
+        <div className="pt-2 flex flex-col items-center mt-8 lg:mt-0">
           <button
             onClick={handleNext}
             disabled={!canContinue}
@@ -461,7 +437,7 @@ const OrbitIcon = forwardRef<HTMLButtonElement, OrbitIconProps>(function OrbitIc
       style={style}
     >
       <div
-        className="relative grid place-items-center rounded-full transition-all"
+        className="relative grid place-items-center rounded-full  transition-all"
         style={{
           width: size,
           height: size,
