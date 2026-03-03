@@ -46,7 +46,7 @@ export const dict = {
   zh: "仅属于你的私人时刻 ✨ 我们不会存储你的个人信息。",
 },
 
-  nameLabel: { en: "Name (Optional)", zh: "名字 (可选)" },
+  nameLabel: { en: "Nickname", zh: "怎么称呼" },
   dobLabel: { en: "Date of Birth", zh: "出生日期" },
 
   day: { en: "Day", zh: "日" },
