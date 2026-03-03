@@ -42,8 +42,8 @@ export const dict = {
   },
 
   profilePrivacyNote: {
-  en: "Private moment only ✨ We don't store your profile data.",
-  zh: "仅属于你的私人时刻 ✨ 我们不会存储你的个人信息。",
+  en: "🔒No login required. We don't store your profile data.",
+  zh: "🔒无需登录，你的信息不会被保存或分享。",
 },
 
   nameLabel: { en: "Nickname", zh: "怎么称呼" },
