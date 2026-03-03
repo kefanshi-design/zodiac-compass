@@ -29,20 +29,24 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
 
-        {/* ✅ Zodiac Compass Google Analytics */}
+        {/* GA4 Script */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-3N4M28L50Y"
           strategy="afterInteractive"
         />
 
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script id="ga4-config" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-3N4M28L50Y');
+            gtag('config', 'G-3N4M28L50Y', {
+              page_path: window.location.pathname,
+            });
           `}
         </Script>
       </body>
