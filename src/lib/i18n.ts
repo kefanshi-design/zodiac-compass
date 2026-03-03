@@ -32,13 +32,13 @@ export const dict = {
   // Profile (merged)
   // ======================
   profileTitle: {
-    en: "Find your Zodiac blend.",
-    zh: "找到你的星座能量配方。",
+    en: "Tell us about you and choose a path to explore.",
+    zh: "请告诉我们你的故事，并选择一条探索之路。",
   },
 
   profileSubtitle: {
-    en: "In just 1 step, get a small daily insight made for today.",
-    zh: "只需一步，即可获得专为今日打造的每日小贴士。",
+    en: "In just one step, this will help us find your Zodiac blend and create your personalized daily tips for today.",
+    zh: "只需一步，即可帮助我们找到您的星座组合，并为您创建今日专属的每日小贴士。",
   },
 
   profilePrivacyNote: {
