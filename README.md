@@ -9,8 +9,7 @@ Zodiac Compass is a product concept designed to create a playful and engaging wa
 ## My Role
 
 - Product Design
-- UX Research
-- UI Design
+- UI Design/Visual Design
 - AI-assisted Development
 
 ## Design Process
