@@ -30,10 +30,6 @@ Zodiac Compass is a product concept designed to create a playful and engaging wa
 - TypeScript
 - Tailwind CSS
 
-## Preview
+## Link
 
-(Add screenshots here)
-
-## Demo
-
-([Add Vercel link if available](https://zodiac-compass.us/))
+([Link](https://zodiac-compass.us/))
