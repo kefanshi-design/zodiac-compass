@@ -36,4 +36,4 @@ Zodiac Compass is a product concept designed to create a playful and engaging wa
 
 ## Demo
 
-(Add Vercel link if available)
+([Add Vercel link if available](https://zodiac-compass.us/))
